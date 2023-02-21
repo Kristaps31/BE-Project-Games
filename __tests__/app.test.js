@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 describe("app", ()=> { 
-describe.only("GET /api/categories", () => {
+describe("GET /api/categories", () => {
     test("200: responds with array with properties slug and description", () => {
         return request(app)
         .get('/api/categories')
