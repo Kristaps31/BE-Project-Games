@@ -32,7 +32,9 @@ describe("GET /api/reviews", ()=> {
         .get('/api/reviews')
         .expect(200)
         .then(({ body }) => {
-            const {reviews} = body;
+            const { reviews } = body;
+            expect(reviews).toHaveLength(13);
+            // reviews.forEach(review)
         });
     })
 })
