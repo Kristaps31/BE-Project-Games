@@ -27,5 +27,13 @@ describe.only("GET /api/categories", () => {
         });
         })
     })
+    test("404: responds with route that does not exist", () => {
+        return request(app)
+        .get('/api/notCategory')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe("404 Route Not Found");
+        })
+    })
 })
 });
