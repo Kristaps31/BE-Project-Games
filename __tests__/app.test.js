@@ -21,8 +21,10 @@ describe.only("GET /api/categories", () => {
         .then(({ body }) => {
             const {categories} = body
             expect(categories).toHaveLength(4);
-            expect(categories[0]).toHaveProperty("slug", expect.any(String));
-            expect(categories[0]).toHaveProperty("description", expect.any(String));
+            categories.forEach(category => { 
+            expect(category).toHaveProperty("slug", expect.any(String));
+            expect(category).toHaveProperty("description", expect.any(String));
+        });
         })
     })
 })
