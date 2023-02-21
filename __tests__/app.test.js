@@ -3,6 +3,7 @@ const app = require("../app");
 const data = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
+const { toString } = require("../db/data/test-data/users");
 
 beforeEach(()=> {
     return seed(data)
@@ -21,9 +22,11 @@ describe("GET /api/categories", () => {
         .then(({ body }) => {
             const {categories} = body;
             expect(categories).toHaveLength(4);
-            expect(categories[0]).toHaveProperty("slug", expect.any(String));
-            expect(categories[0]).toHaveProperty("description", expect.any(String));
+            categories.forEach(category => {
+            expect(category).toHaveProperty("slug", expect.any(String));
+            expect(category).toHaveProperty("description", expect.any(String));
         })
+    })
     })
 })
 describe("GET /api/reviews", ()=> {
@@ -34,15 +37,24 @@ describe("GET /api/reviews", ()=> {
         .then(({ body }) => {
             const { reviews } = body;
             expect(reviews).toHaveLength(13);
+
+          
+            for(let i = 0; i < reviews.length - 1; i++){
+            let dateNow = new Date(reviews[i].created_at).getTime();
+            let dateNext = new Date(reviews[i + 1].created_at).getTime();
+            expect(dateNow).toBeGreaterThanOrEqual(dateNext);
+            };
+
             reviews.forEach(review => {
-                expect(review).toHaveProperty("title", expect.any(String));
-                expect(review).toHaveProperty("designer", expect.any(String));
                 expect(review).toHaveProperty("owner", expect.any(String));
-                expect(review).toHaveProperty("review_img_url", expect.any(String));
-                expect(review).toHaveProperty("review_body", expect.any(String));
+                expect(review).toHaveProperty("title", expect.any(String));
+                expect(review).toHaveProperty("review_id"), expect.any(Number)
                 expect(review).toHaveProperty("category", expect.any(String));
+                expect(review).toHaveProperty("review_img_url", expect.any(String));
                 expect(review).toHaveProperty("created_at", expect.any(String));
                 expect(review).toHaveProperty("votes", expect.any(Number));
+                expect(review).toHaveProperty("designer", expect.any(String));
+                expect(review).toHaveProperty("comment_count", expect.any(String));
             })
         });
     })
