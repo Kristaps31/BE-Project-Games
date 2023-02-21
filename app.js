@@ -1,6 +1,6 @@
-const experss = require("express");
+const express = require("express");
 const {getCategories, getReviewsById} = require("./controllers/games.controllers")
-const app = experss();
+const app = express();
 
 app.get("/api/categories", getCategories)
 
