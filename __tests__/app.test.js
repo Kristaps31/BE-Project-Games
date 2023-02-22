@@ -51,9 +51,17 @@ describe("GET /api/reviews/:review_id", () => {
           })
     })
 
-    test("400: GET invalid review_id", () => {
+    test("404: GET review_id out of range", () => {
         return request(app)
         .get("/api/reviews/100")
+        .expect(404)
+        .then(({body})=> {
+            expect(body.msg).toBe("Bad Request");
+        });
+    })
+    test("400: GET invalid review_id", () => {
+        return request(app)
+        .get("/api/reviews/apple")
         .expect(400)
         .then(({body})=> {
             expect(body.msg).toBe("Bad Request");
