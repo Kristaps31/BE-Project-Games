@@ -26,6 +26,8 @@ describe("GET /api/categories", () => {
             expect(category).toHaveProperty("description", expect.any(String));
         })
     })
+})
+
     test("404: responds with route that does not exist", () => {
         return request(app)
         .get('/api/notCategory')
@@ -34,7 +36,7 @@ describe("GET /api/categories", () => {
             expect(body.msg).toBe("404 Route Not Found");
         })
     
-    })
+    
 })
 describe("GET /api/reviews", ()=> {
     test("200: responds with array of objects, each having following properties, owner, title, review_id, category, review_img_url, created_at, votes, designer, comment_count", () => {
