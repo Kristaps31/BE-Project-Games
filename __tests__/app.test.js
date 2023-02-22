@@ -3,7 +3,7 @@ const app = require("../app");
 const data = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
-const { toString } = require("../db/data/test-data/users");
+
 
 beforeEach(()=> {
     return seed(data)
@@ -58,6 +58,13 @@ describe("GET /api/reviews", ()=> {
             })
         });
     })
+    test("404: responds with route that does not exist", () => {
+        return request(app)
+        .get('/api/notCategory')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe("404 Route Not Found");
+        })
+    });
 })
 });
-
