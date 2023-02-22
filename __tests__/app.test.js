@@ -31,9 +31,32 @@ describe("GET /api/categories", () => {
 
 describe("GET /api/reviews/:review_id", () => {
     test("200: responds with single object containing properties {review_id, title, review_body, designer, review_img_url, votes, category, owner, created_at}", ()=> {
+        const outcome = {
+            review_id: 1,
+            title: 'Agricola',
+            category: 'euro game',
+            designer: 'Uwe Rosenberg',
+            owner: 'mallionaire',
+            review_body: 'Farmyard fun!',
+            review_img_url: 'https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=700&h=700',
+            created_at: "2021-01-18T10:00:20.514Z",
+            votes: 1
+          };
+
         return request(app)
         .get('/api/reviews/1')
         .expect(200)
+        .then(({body}) => {
+            expect(body.review).toEqual(outcome);
+          })
+    })
+    test("400: GET invalid review_id", () => {
+        return request(app)
+        .get("/api/reviews/invalid_id")
+        // .expect(400)
+        // .then(({body})=> {
+        //     expect(body.msg).toBe("Bed Request");
+        // });
     })
 })
 });
