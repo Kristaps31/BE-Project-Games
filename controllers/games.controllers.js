@@ -1,5 +1,6 @@
 const {selectCategories, selectReviews} = require("../models/games.models")
 
+
 exports.getCategories = (req, res, next) => {
     selectCategories()
     .then((categories) => {

@@ -4,7 +4,6 @@ const data = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
 
-
 beforeEach(()=> {
     return seed(data)
 });
@@ -27,6 +26,14 @@ describe("GET /api/categories", () => {
             expect(category).toHaveProperty("description", expect.any(String));
         })
     })
+    test("404: responds with route that does not exist", () => {
+        return request(app)
+        .get('/api/notCategory')
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe("404 Route Not Found");
+        })
+    
     })
 })
 describe("GET /api/reviews", ()=> {
@@ -57,14 +64,10 @@ describe("GET /api/reviews", ()=> {
                 expect(review).toHaveProperty("comment_count", expect.any(String));
             })
         });
+
     })
-    test("404: responds with route that does not exist", () => {
-        return request(app)
-        .get('/api/notCategory')
-        .expect(404)
-        .then(({ body }) => {
-            expect(body.msg).toBe("404 Route Not Found");
-        })
+
     });
 })
 });
+

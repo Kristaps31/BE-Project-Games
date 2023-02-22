@@ -23,3 +23,4 @@ exports.selectReviews = () => {
         return reviews;
   });
 }
+)};
