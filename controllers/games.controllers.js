@@ -11,6 +11,7 @@ exports.getCategories = (req, res, next) => {
 };
 
 exports.getReviewsById = (req, res, next) => {
+
     const { review_id } = req.params;
 
     selectReviewsById(review_id)

@@ -42,14 +42,22 @@ describe("GET /api/reviews/:review_id", () => {
             created_at: "2021-01-18T10:00:20.514Z",
             votes: 1
           };
+
+        return request(app)
+        .get('/api/reviews/1')
+        .expect(200)
+        .then(({body}) => {
+            expect(body.review).toEqual(outcome);
+          })
     })
-    // test("400: GET invalid review_id", () => {
-    //     return request(app)
-    //     .get("/api/reviews/invalid_id")
-    //     .expect(400)
-    //     .then(({body})=> {
-    //         expect(body.msg).toBe("Bed Request");
-    //     });
-    // })
+
+    test("400: GET invalid review_id", () => {
+        return request(app)
+        .get("/api/reviews/100")
+        .expect(400)
+        .then(({body})=> {
+            expect(body.msg).toBe("Bad Request");
+        });
+    })
 })
 });
