@@ -23,3 +23,14 @@ exports.selectReviews = () => {
         return reviews;
   });
 }
+
+exports.selectCommentsByID = (id) => {
+return db.query 
+(`SELECT * FROM comments WHERE comment_id = $1;`, [id])
+.then(results => {
+    if(results.rowCount === 0) {
+        return Promise.reject("No comment with such ID");
+    }
+    return results.rows[0];
+})
+}
