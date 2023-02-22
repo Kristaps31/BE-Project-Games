@@ -8,9 +8,17 @@ exports.selectCategories = () => {
 )};
 
 exports.selectReviewsById = (id) => {
-    return db.query("SELECT * FROM reviews WHERE review_id = $1", [id])
-    .then(results => {
-        if(results.rowCount === 0) {
+    let queryString = "SELECT * FROM reviews"
+    const queryParams = [];
+
+    if(review_id !== undefined){
+        queryString += "WHERE review_id = $1"
+        queryParams.push(review_id)
+    }
+
+    return db.query(queryString, queryParams).then(results => {
+        const rowCount = result.rowCount
+        if(rowCount === 0) {
             return Promise.reject("No review with such ID");
         }
         return results.rows[0];
