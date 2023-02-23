@@ -3,6 +3,7 @@ const app = require("../app");
 const data = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
+const sorted = require('jest-sorted')
 
 beforeEach(() => {
   return seed(data);
@@ -75,17 +76,16 @@ describe("GET /api/reviews/:review_id/comments", () => {
     .get("/api/reviews/2/comments")
     .expect(200)
     .then(({ body }) => {
-      const { comments } = body;
-      if (comments) {
-        comments.forEach(comment => {
-          expect(comment).toHaveProperty("comment_id", expect.any(Number)),
-          expect(comment).toHaveProperty("body", expect.any(String)),
-          expect(comment).toHaveProperty("review_id", expect.any(Number)),
-          expect(comment).toHaveProperty("author", expect.any(String)),
-          expect(comment).toHaveProperty("votes", expect.any(Number)),
-          expect(comment).toHaveProperty("created_at", expect.any(String));
+      const { comment } = body;
+        expect(comment).toBeSorted("created_at",{ descending: true });
+        comment.forEach(entry => {
+          expect(entry).toHaveProperty("comment_id", expect.any(Number)),
+          expect(entry).toHaveProperty("body", expect.any(String)),
+          expect(entry).toHaveProperty("review_id", expect.any(Number)),
+          expect(entry).toHaveProperty("author", expect.any(String)),
+          expect(entry).toHaveProperty("votes", expect.any(Number)),
+          expect(entry).toHaveProperty("created_at", expect.any(String));
         });
-      };
   });
   
 });
