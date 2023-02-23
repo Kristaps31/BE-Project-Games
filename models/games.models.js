@@ -36,3 +36,23 @@ exports.selectReviews = () => {
       return reviews;
     });
 };
+
+exports.insertComment = (newComment, review_id) => {
+
+  const userId = Number(review_id)
+  const { username, body } = newComment;
+
+  if (!username || !body) {
+    return Promise.reject("Fields are not filled in");
+  }
+
+  return db
+  .query(
+    `INSERT INTO comments (review_id, author, body) VALUES ($1, $2, $3) RETURNING *;`,
+    [userId, username, body]
+    )
+    .then((results) => {
+      return results.rows[0];
+    });
+
+}
