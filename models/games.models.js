@@ -1,5 +1,6 @@
 const db = require('../db/connection')
 
+
 exports.selectCategories = () => {
     return db.query("SELECT * FROM categories;").then(result => {
         const categories = result.rows
@@ -26,11 +27,12 @@ exports.selectReviews = () => {
 
 exports.selectCommentsByID = (id) => {
 return db.query 
-(`SELECT * FROM comments WHERE comment_id = $1;`, [id])
+(`SELECT * FROM comments WHERE review_id = $1 ORDER BY created_at DESC;`, [id])
 .then(results => {
     if(results.rowCount === 0) {
         return Promise.reject("No comment with such ID");
     }
-    return results.rows[0];
+    return results.rows;
 })
 }
+

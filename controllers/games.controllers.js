@@ -2,12 +2,12 @@ const {selectCategories, selectReviews, selectCommentsByID} = require("../models
 
 
 exports.getCategories = (req, res, next) => {
-    selectCategories()
+  selectCategories()
     .then((categories) => {
-        res.status(200).send({categories})
+      res.status(200).send({ categories });
     })
     .catch(err => {
-    throw err
+    next(err)
     })
 };
 
@@ -18,7 +18,7 @@ exports.getReviews = (req, res, next) => {
         res.status(200).send({reviews})
     })
     .catch(err => {
-        throw err
+        next(err)
     });
 };
 
@@ -28,7 +28,7 @@ exports.getCommentsByID = (req, res, next) => {
     .then((comment) => {
         res.status(200).send({comment})
     })
-    .catch(err => {
-    throw err
-    })
-}
+    .catch((err) => {
+      next(err);
+    });
+};
