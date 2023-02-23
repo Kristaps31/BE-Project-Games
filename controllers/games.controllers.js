@@ -25,8 +25,8 @@ exports.getReviews = (req, res, next) => {
 exports.getCommentsByID = (req, res, next) => {
     const { review_id } = req.params;
     selectCommentsByID(review_id)
-    .then((comment) => {
-        res.status(200).send({comment})
+    .then((comments) => {
+        res.status(200).send({comments})
     })
     .catch((err) => {
       next(err);

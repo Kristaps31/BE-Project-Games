@@ -76,9 +76,9 @@ describe("GET /api/reviews/:review_id/comments", () => {
     .get("/api/reviews/2/comments")
     .expect(200)
     .then(({ body }) => {
-      const { comment } = body;
-        expect(comment).toBeSorted("created_at",{ descending: true });
-        comment.forEach(entry => {
+      const { comments } = body;
+        expect(comments).toBeSorted("created_at",{ descending: true });
+        comments.forEach(entry => {
           expect(entry).toHaveProperty("comment_id", expect.any(Number)),
           expect(entry).toHaveProperty("body", expect.any(String)),
           expect(entry).toHaveProperty("review_id", expect.any(Number)),
