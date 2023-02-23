@@ -21,3 +21,4 @@ exports.handleCustomErrors = (error, req, res, next) => {
 exports.handle500Errors = (error, req, res, next) => {
   res.status(500).send({ msg: "Server error" });
 };
+

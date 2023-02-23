@@ -18,10 +18,9 @@ exports.selectReviewsById = (id) => {
     });
 };
 
+
 exports.selectReviews = () => {
-  return db
-    .query(
-      `
+    return db.query(`
     SELECT 
     reviews.owner, reviews.title, reviews.review_id, reviews.category, reviews.review_img_url, reviews.created_at, reviews.votes, reviews.designer,  
     COUNT(comments.review_id) AS comment_count
