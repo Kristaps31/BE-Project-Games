@@ -31,11 +31,31 @@ exports.selectReviews = () => {
     reviews.owner, reviews.title, reviews.review_id, reviews.category, reviews.review_img_url, reviews.created_at, reviews.votes, reviews.designer
     ORDER BY created_at DESC;
     `)
-    .then(result => {
-        const reviews = result.rows
-        return reviews;
-  });
+    .then((result) => {
+      const reviews = result.rows;
+      return reviews;
+    });
+};
+
+exports.insertComment = (newComment, review_id) => {
+
+  const userId = Number(review_id)
+  const { username, body } = newComment;
+
+  if (!username || !body) {
+    return Promise.reject("Fields are not filled in");
+  }
+
+  return db
+  .query(
+    `INSERT INTO comments (review_id, author, body) VALUES ($1, $2, $3) RETURNING *;`,
+    [userId, username, body]
+    )
+    .then((results) => {
+      return results.rows[0];
+    });
 }
+
 
 exports.selectCommentsByID = (id) => {
 return db.query 
@@ -47,3 +67,4 @@ return db.query
     return results.rows;
 })
 }
+

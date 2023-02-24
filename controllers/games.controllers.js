@@ -1,13 +1,13 @@
 
-const {selectCategories, selectReviews, selectReviewsById, selectCommentsByID} = require("../models/games.models")
+const {selectCategories, selectReviews, selectReviewsById, selectCommentsByID, insertComment, } = require("../models/games.models");
 
 exports.getCategories = (req, res, next) => {
   selectCategories()
     .then((categories) => {
       res.status(200).send({ categories });
     })
-    .catch(err => {
-    next(err)
+    .catch((err) => {
+      next(err);
     });
 };
 
@@ -18,7 +18,7 @@ exports.getReviews = (req, res, next) => {
       res.status(200).send({ reviews });
     })
     .catch((err) => {
-      throw err;
+      next(err);
     });
 };
 
@@ -43,3 +43,16 @@ exports.getCommentsByID = (req, res, next) => {
       next(err);
     });
 };
+
+exports.postCommentByReviewId = (req, res, next) => {
+  const { review_id } = req.params;
+  const newComment = req.body
+
+  insertComment(newComment, review_id)
+
+  .then((comment) => res.status(201)
+  .send({comment}))
+  .catch((err) => {
+    next(err);
+  });
+}
