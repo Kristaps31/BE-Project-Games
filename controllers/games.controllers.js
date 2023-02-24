@@ -1,5 +1,11 @@
-
-const {selectCategories, selectReviews, selectReviewsById, selectCommentsByID, insertComment, } = require("../models/games.models");
+const {
+  selectCategories,
+  selectReviews,
+  selectReviewsById,
+  selectCommentsByID,
+  insertComment,
+  reviewVoteUpdate,
+} = require("../models/games.models");
 
 exports.getCategories = (req, res, next) => {
   selectCategories()
@@ -28,16 +34,16 @@ exports.getReviewsById = (req, res, next) => {
     .then((review) => {
       res.status(200).send({ review });
     })
-    .catch(err => {
-        next(err)
+    .catch((err) => {
+      next(err);
     });
 };
 
 exports.getCommentsByID = (req, res, next) => {
-    const { review_id } = req.params;
-    selectCommentsByID(review_id)
+  const { review_id } = req.params;
+  selectCommentsByID(review_id)
     .then((comments) => {
-        res.status(200).send({comments})
+      res.status(200).send({ comments });
     })
     .catch((err) => {
       next(err);
@@ -46,13 +52,22 @@ exports.getCommentsByID = (req, res, next) => {
 
 exports.postCommentByReviewId = (req, res, next) => {
   const { review_id } = req.params;
-  const newComment = req.body
+  const newComment = req.body;
 
   insertComment(newComment, review_id)
+    .then((comment) => res.status(201).send({ comment }))
+    .catch((err) => {
+      next(err);
+    });
+};
 
-  .then((comment) => res.status(201)
-  .send({comment}))
+exports.updateReviewVote = (req, res, next) => {
+  const { review_id } = req.params;
+  const voteAmendBy = req.body;
+
+  reviewVoteUpdate(review_id, voteAmendBy)
+  .then((review) => res.status(200).send({review}))
   .catch((err) => {
     next(err);
-  });
-}
+  }) 
+};
