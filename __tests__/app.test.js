@@ -56,17 +56,11 @@ describe("app", () => {
               expect(review).toHaveProperty("title", expect.any(String));
               expect(review).toHaveProperty("review_id"), expect.any(Number);
               expect(review).toHaveProperty("category", expect.any(String));
-              expect(review).toHaveProperty(
-                "review_img_url",
-                expect.any(String)
-              );
+              expect(review).toHaveProperty("review_img_url",expect.any(String));
               expect(review).toHaveProperty("created_at", expect.any(String));
               expect(review).toHaveProperty("votes", expect.any(Number));
               expect(review).toHaveProperty("designer", expect.any(String));
-              expect(review).toHaveProperty(
-                "comment_count",
-                expect.any(String)
-              );
+              expect(review).toHaveProperty("comment_count", expect.any(String));
             });
           });
       });
@@ -214,6 +208,7 @@ describe("POST", () => {
           expect(body.msg).toBe("Required fields are not filled in");
         })
     });
+
     test("400: responds with error message when comment is empty", () => {
       return request(app)
         .post("/api/reviews/1/comments")
