@@ -28,7 +28,7 @@ describe("app", () => {
           });
         });
     });
-
+   
     test("404: responds with route that does not exist", () => {
       return request(app)
         .get("/api/notCategory")
@@ -37,6 +37,7 @@ describe("app", () => {
           expect(body.msg).toBe("404 Route Not Found");
         });
     });
+
 
   describe("GET /api/reviews", () => {
       test("200: responds with array of objects, each having following properties, owner, title, review_id, category, review_img_url, created_at, votes, designer, comment_count", () => {
@@ -67,6 +68,46 @@ describe("app", () => {
           });
       });
     });
+    describe("GET /api/reviews/:review_id", () => {
+      test("200: responds with single object containing properties {review_id, title, review_body, designer, review_img_url, votes, category, owner, created_at}", () => {
+        const outcome = {
+          review_id: 1,
+          title: "Agricola",
+          category: "euro game",
+          designer: "Uwe Rosenberg",
+          owner: "mallionaire",
+          review_body: "Farmyard fun!",
+          review_img_url:
+            "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=700&h=700",
+          created_at: "2021-01-18T10:00:20.514Z",
+          votes: 1,
+        };
+        return request(app)
+          .get("/api/reviews/1")
+          .expect(200)
+          .then(({ body }) => {
+            expect(body.review).toEqual(outcome);
+          });
+      });
+
+      test("404: GET review_id out of range", () => {
+        return request(app)
+          .get("/api/reviews/100")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("404 Route Not Found");
+          });
+      });
+
+      test("400: GET invalid review_id", () => {
+        return request(app)
+          .get("/api/reviews/apple")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Bad Request");
+          });
+      });
+    });
   });
 });
 
@@ -87,7 +128,6 @@ describe("GET /api/reviews/:review_id/comments", () => {
           expect(entry).toHaveProperty("created_at", expect.any(String));
         });
   });
-  
 });
 test("should return 404 if review_id is not found", () => {
   return request(app)
