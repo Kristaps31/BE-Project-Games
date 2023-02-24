@@ -13,6 +13,8 @@ exports.handle404Errors = (req, res) => {
 exports.handleCustomErrors = (error, req, res, next) => {
   if (error === `No review with such ID`) {
     res.status(404).send({ msg: "404 Route Not Found" });
+  } else if (error === "No comment with such ID") {
+    res.status(404).send({ msg: "Review not found" });
   } else {
     next(error);
   }
