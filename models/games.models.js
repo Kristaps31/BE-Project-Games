@@ -1,5 +1,6 @@
 const db = require("../db/connection");
 
+
 exports.selectCategories = () => {
   return db.query("SELECT * FROM categories;").then((result) => {
     const categories = result.rows;
@@ -29,8 +30,7 @@ exports.selectReviews = () => {
     GROUP BY 
     reviews.owner, reviews.title, reviews.review_id, reviews.category, reviews.review_img_url, reviews.created_at, reviews.votes, reviews.designer
     ORDER BY created_at DESC;
-    `
-    )
+    `)
     .then((result) => {
       const reviews = result.rows;
       return reviews;
@@ -54,5 +54,17 @@ exports.insertComment = (newComment, review_id) => {
     .then((results) => {
       return results.rows[0];
     });
-
 }
+
+
+exports.selectCommentsByID = (id) => {
+return db.query 
+(`SELECT * FROM comments WHERE review_id = $1 ORDER BY created_at DESC;`, [id])
+.then(results => {
+    if(results.rowCount === 0) {
+        return Promise.reject("No comment with such ID");
+    }
+    return results.rows;
+})
+}
+
