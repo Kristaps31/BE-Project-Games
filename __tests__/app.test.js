@@ -120,7 +120,13 @@ describe("POST", () => {
         .send(newComment)
         .expect(201)
         .then(({ body }) => {
-          expect(body.comment.body).toBe(newComment.body);
+          expect(Object.keys(body.comment).length).toBe(6)
+          expect(body.comment).toHaveProperty("comment_id"), expect.any(Number);
+          expect(body.comment).toHaveProperty("body", expect.any(String));
+          expect(body.comment).toHaveProperty("review_id"), expect.any(Number);
+          expect(body.comment).toHaveProperty("author", expect.any(String));
+          expect(body.comment).toHaveProperty("votes", expect.any(Number));
+          expect(body.comment).toHaveProperty("created_at", expect.any(String));
         });
     });
 
@@ -129,13 +135,20 @@ describe("POST", () => {
         username: "bainesface",
         body: "This is an amazing game, unfortunately no spider characters though!",
         favorite_food: "Pizza",
+        personal_hobbies: "fishing and picking nose",
       };
       return request(app)
         .post("/api/reviews/1/comments")
         .send(firstComment)
         .expect(201)
         .then(({body})=> {
-          expect(body.comment.body).toBe(firstComment.body);
+          expect(Object.keys(body.comment).length).toBe(6)
+          expect(body.comment).toHaveProperty("comment_id"), expect.any(Number);
+          expect(body.comment).toHaveProperty("body", expect.any(String));
+          expect(body.comment).toHaveProperty("review_id"), expect.any(Number);
+          expect(body.comment).toHaveProperty("author", expect.any(String));
+          expect(body.comment).toHaveProperty("votes", expect.any(Number));
+          expect(body.comment).toHaveProperty("created_at", expect.any(String));
     });
   });
 

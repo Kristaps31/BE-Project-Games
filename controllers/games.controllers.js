@@ -11,7 +11,7 @@ exports.getCategories = (req, res, next) => {
       res.status(200).send({ categories });
     })
     .catch((err) => {
-      throw err;
+      next(err);
     });
 };
 
@@ -22,7 +22,7 @@ exports.getReviews = (req, res, next) => {
       res.status(200).send({ reviews });
     })
     .catch((err) => {
-      throw err;
+      next(err);
     });
 };
 
