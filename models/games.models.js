@@ -1,4 +1,3 @@
-const { updateReviewVote } = require("../controllers/games.controllers");
 const db = require("../db/connection");
 
 exports.selectCategories = () => {
@@ -78,7 +77,6 @@ exports.reviewVoteUpdate = (review_id, voteAmendBy) => {
   if (!inc_votes) {
     return Promise.reject("Fields are not filled in");
   }
-
   return db
   .query(
     `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *`,
@@ -91,3 +89,15 @@ exports.reviewVoteUpdate = (review_id, voteAmendBy) => {
     return results.rows[0]
   })
 }
+
+
+exports.selectUsers = () => {
+  return db
+  .query(
+    `SELECT users.username, users.name, users.avatar_url FROM users;`
+    )
+    .then((result) => {
+    const users = result.rows;
+    return users;
+  });
+};

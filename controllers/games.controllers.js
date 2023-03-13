@@ -5,6 +5,7 @@ const {
   selectCommentsByID,
   insertComment,
   reviewVoteUpdate,
+  selectUsers,
 } = require("../models/games.models");
 
 exports.getCategories = (req, res, next) => {
@@ -70,4 +71,15 @@ exports.updateReviewVote = (req, res, next) => {
   .catch((err) => {
     next(err);
   }) 
+};
+
+exports.getUsersData = (req, res, next) => {
+  selectUsers()
+    .then((userInfo) => {
+      res.status(200).send({ userInfo });
+    })
+    .catch((err) => {
+      console.log(err)
+      next(err);
+    });
 };

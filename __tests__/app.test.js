@@ -13,7 +13,7 @@ afterAll(() => {
   return db.end();
 });
 
-describe("app", () => {
+describe("GET", () => {
   describe("GET /api/categories", () => {
     test("200: responds with array with properties slug and description", () => {
       return request(app)
@@ -115,39 +115,55 @@ describe("app", () => {
       });
     });
   });
-});
 
-describe("GET /api/reviews/:review_id/comments", () => {
-  test("200: checks length of the array and its properties", () => {
-    return request(app)
-      .get("/api/reviews/2/comments")
-      .expect(200)
-      .then(({ body }) => {
-        const { comments } = body;
-        expect(comments).toBeSorted("created_at", { descending: true });
-        comments.forEach((entry) => {
-          expect(entry).toHaveProperty("comment_id", expect.any(Number)),
-            expect(entry).toHaveProperty("body", expect.any(String)),
-            expect(entry).toHaveProperty("review_id", expect.any(Number)),
-            expect(entry).toHaveProperty("author", expect.any(String)),
-            expect(entry).toHaveProperty("votes", expect.any(Number)),
-            expect(entry).toHaveProperty("created_at", expect.any(String));
+  describe("GET /api/reviews/:review_id/comments", () => {
+    test("200: checks length of the array and its properties", () => {
+      return request(app)
+        .get("/api/reviews/2/comments")
+        .expect(200)
+        .then(({ body }) => {
+          const { comments } = body;
+          expect(comments).toBeSorted("created_at", { descending: true });
+          comments.forEach((entry) => {
+            expect(entry).toHaveProperty("comment_id", expect.any(Number)),
+              expect(entry).toHaveProperty("body", expect.any(String)),
+              expect(entry).toHaveProperty("review_id", expect.any(Number)),
+              expect(entry).toHaveProperty("author", expect.any(String)),
+              expect(entry).toHaveProperty("votes", expect.any(Number)),
+              expect(entry).toHaveProperty("created_at", expect.any(String));
+          });
         });
-      });
-  });
-  test("should return 404 if review_id is not found", () => {
-    return request(app)
-      .get("/api/reviews/999/comments")
-      .expect(404)
-      .expect({ msg: "Review not found" });
+    });
+    test("should return 404 if review_id is not found", () => {
+      return request(app)
+        .get("/api/reviews/999/comments")
+        .expect(404)
+        .expect({ msg: "Review not found" });
+    });
+  
+    test("should return an Bad Request if there are no comments for a review", () => {
+      return request(app)
+        .get("/api/reviews/apple/comments")
+        .expect(400)
+        .expect({ msg: "Bad Request" });
+    });
   });
 
-  test("should return an Bad Request if there are no comments for a review", () => {
-    return request(app)
-      .get("/api/reviews/apple/comments")
-      .expect(400)
-      .expect({ msg: "Bad Request" });
-  });
+  describe("GET /api/users", () => {
+    test("200: test returns an array of username, name and avatar_url from users table", () => {
+      return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({body}) => {
+        const { userInfo } = body
+        expect(userInfo).toHaveLength(4)
+        userInfo.forEach(user => {
+          expect(user).toHaveProperty("username", expect.any(String));
+          expect(user).toHaveProperty("name", expect.any(String));
+          expect(user).toHaveProperty("avatar_url"), expect.any(String);
+      })
+    })
+  })
 });
 
 describe("POST", () => {
@@ -433,3 +449,4 @@ describe("PATCH", () => {
         });
     });
   });
+});
