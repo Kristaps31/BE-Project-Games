@@ -1,5 +1,3 @@
-
-
 exports.handle400Errors = (error, req, res, next) => {
   if ((error.code === "22P02")) {
     res.status(400).send({ msg: "Bad Request" })
