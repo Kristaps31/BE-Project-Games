@@ -63,6 +63,7 @@ describe("GET", () => {
                 expect.any(String)
               );
               expect(review).toHaveProperty("created_at", expect.any(String));
+              expect(review).toHaveProperty("review_body", expect.any(String));
               expect(review).toHaveProperty("votes", expect.any(Number));
               expect(review).toHaveProperty("designer", expect.any(String));
               expect(review).toHaveProperty(
